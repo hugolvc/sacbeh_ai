@@ -76,7 +76,7 @@ def render_welcome_page():
         margin: 2rem 0;
     }}
     .feature-card {{
-        background-color: rgba(0, 102, 204, 0.1);
+        background-color: rgba(255, 255, 255, 0.9);
         border-radius: 10px;
         padding: 1.5rem;
         border: 1px solid rgba(0, 102, 204, 0.3);
@@ -92,13 +92,13 @@ def render_welcome_page():
         color: #0066cc;
     }}
     .feature-title {{
-        color: #ffffff;
+        color: #2d2d2d;
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }}
     .feature-description {{
-        color: #cccccc;
+        color: #555555;
         font-size: 0.95rem;
         line-height: 1.5;
     }}
@@ -227,32 +227,76 @@ def render_welcome_page():
     """, unsafe_allow_html=True)
     
     # Features Grid
-    st.markdown("""
+    try:
+        # Load the robot icon
+        robot_icon_path = "assets/robot.png"
+        if os.path.exists(robot_icon_path):
+            robot_icon_base64 = base64.b64encode(open(robot_icon_path, 'rb').read()).decode()
+            robot_icon_html = f'<img src="data:image/png;base64,{robot_icon_base64}" style="width: 40px; height: 40px; object-fit: contain;">'
+        else:
+            robot_icon_html = '🤖'  # Fallback to emoji
+    except Exception as e:
+        robot_icon_html = '🤖'  # Fallback to emoji
+    
+    try:
+        # Load the network icon
+        network_icon_path = "assets/network.png"
+        if os.path.exists(network_icon_path):
+            network_icon_base64 = base64.b64encode(open(network_icon_path, 'rb').read()).decode()
+            network_icon_html = f'<img src="data:image/png;base64,{network_icon_base64}" style="width: 40px; height: 40px; object-fit: contain;">'
+        else:
+            network_icon_html = '🛤️'  # Fallback to emoji
+    except Exception as e:
+        network_icon_html = '🛤️'  # Fallback to emoji
+    
+    try:
+        # Load the dynamic icon
+        dynamic_icon_path = "assets/dynamic.png"
+        if os.path.exists(dynamic_icon_path):
+            dynamic_icon_base64 = base64.b64encode(open(dynamic_icon_path, 'rb').read()).decode()
+            dynamic_icon_html = f'<img src="data:image/png;base64,{dynamic_icon_base64}" style="width: 40px; height: 40px; object-fit: contain;">'
+        else:
+            dynamic_icon_html = '🔄'  # Fallback to emoji
+    except Exception as e:
+        dynamic_icon_html = '🔄'  # Fallback to emoji
+    
+    try:
+        # Load the database icon
+        database_icon_path = "assets/database.png"
+        if os.path.exists(database_icon_path):
+            database_icon_base64 = base64.b64encode(open(database_icon_path, 'rb').read()).decode()
+            database_icon_html = f'<img src="data:image/png;base64,{database_icon_base64}" style="width: 40px; height: 40px; object-fit: contain;">'
+        else:
+            database_icon_html = '🔌'  # Fallback to emoji
+    except Exception as e:
+        database_icon_html = '🔌'  # Fallback to emoji
+    
+    st.markdown(f"""
         <h2 style="color: #0066cc; margin-bottom: 1.5rem;">✨ Key Features</h2>
         <div class="feature-grid">
             <div class="feature-card">
-                <div class="feature-icon">🤖</div>
+                <div class="feature-icon">{robot_icon_html}</div>
                 <div class="feature-title">AI-Powered Analysis</div>
                 <div class="feature-description">
                     Intelligent data source analysis with automatic dimension discovery and corporate process identification.
                 </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🛤️</div>
+                <div class="feature-icon">{network_icon_html}</div>
                 <div class="feature-title">Path Traversal</div>
                 <div class="feature-description">
                     Navigate through data hierarchies by clicking on chart elements to explore deeper insights.
                 </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔄</div>
+                <div class="feature-icon">{dynamic_icon_html}</div>
                 <div class="feature-title">Dynamic Dimensions</div>
                 <div class="feature-description">
                     Switch aggregation dimensions on-the-fly to create new perspectives and data detours.
                 </div>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">🔌</div>
+                <div class="feature-icon">{database_icon_html}</div>
                 <div class="feature-title">Universal Connectivity</div>
                 <div class="feature-description">
                     Connect to any data source through our abstract factory pattern - databases, APIs, files.
