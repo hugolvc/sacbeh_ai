@@ -90,7 +90,7 @@ def show_register_page():
                     st.error("Please agree to the Terms and Conditions")
                 else:
                     # Attempt registration
-                    success, message = controller.register_user(username, email, password)
+                    success, message = controller.register_user(email, password, username)
                     if success:
                         st.success("Registration successful! Please log in.")
                         st.session_state.navigate_to = 'login'

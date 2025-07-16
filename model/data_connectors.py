@@ -138,7 +138,7 @@ class SQLiteConnector(DatabaseConnector):
             CREATE TABLE IF NOT EXISTS login_attempts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL,
-                ip_address TEXT NOT NULL,
+                ip_address TEXT,
                 user_agent TEXT,
                 success BOOLEAN NOT NULL,
                 attempted_at TEXT NOT NULL,

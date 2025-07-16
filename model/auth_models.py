@@ -149,7 +149,7 @@ class LoginAttempt(BaseModel):
     """
     id: Optional[int] = Field(default=None, description="Unique attempt ID")
     email: EmailStr = Field(..., description="Email used in login attempt")
-    ip_address: str = Field(..., description="IP address of the attempt")
+    ip_address: Optional[str] = Field(default=None, description="IP address of the attempt")
     user_agent: Optional[str] = Field(default=None, description="User agent string")
     success: bool = Field(..., description="Whether login was successful")
     attempted_at: datetime = Field(default_factory=datetime.now, description="Attempt timestamp")
@@ -252,4 +252,24 @@ class AuthUtils:
         if not any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
             issues.append("Password must contain at least one special character")
         
-        return len(issues) == 0, issues 
+        return len(issues) == 0, issues
+    
+    @staticmethod
+    def check_password_strength(password: str) -> str:
+        """
+        Check password strength and return a string representation.
+        
+        Args:
+            password: Password to check
+            
+        Returns:
+            String representation of password strength (Weak, Medium, Strong)
+        """
+        is_strong, issues = AuthUtils.is_password_strong(password)
+        
+        if is_strong:
+            return "Strong"
+        elif len(issues) <= 2:
+            return "Medium"
+        else:
+            return "Weak" 

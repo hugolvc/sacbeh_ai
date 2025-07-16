@@ -67,7 +67,8 @@ class AuthService:
                 email=email,
                 password_hash=password_hash,
                 salt=salt,
-                status=AuthStatus.PENDING_VERIFICATION
+                status=AuthStatus.ACTIVE,
+                email_verified=True
             )
             
             # Insert user auth
@@ -80,7 +81,7 @@ class AuthService:
             if role_id:
                 self._assign_role_to_user(user_id, role_id)
             
-            return True, "User registered successfully. Please verify your email."
+            return True, "User registered successfully. You can now log in."
             
         except Exception as e:
             return False, f"Registration failed: {str(e)}"
@@ -302,8 +303,8 @@ class AuthService:
         """Insert a new user auth record and return the ID."""
         try:
             query = """
-                INSERT INTO user_auth (email, password_hash, salt, status, created_at, password_changed_at)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO user_auth (email, password_hash, salt, status, created_at, password_changed_at, email_verified)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             """
             self.connector.execute_update(query, (
                 user_auth.email,
@@ -311,7 +312,8 @@ class AuthService:
                 user_auth.salt,
                 user_auth.status.value,
                 user_auth.created_at.isoformat(),
-                user_auth.password_changed_at.isoformat()
+                user_auth.password_changed_at.isoformat(),
+                1 if user_auth.email_verified else 0
             ))
             
             # Get the inserted ID
@@ -375,7 +377,7 @@ class AuthService:
             user_agent=user_agent
         )
     
-    def _handle_failed_login(self, user_auth: UserAuth, ip_address: str, user_agent: str) -> None:
+    def _handle_failed_login(self, user_auth: UserAuth, ip_address: str = None, user_agent: str = None) -> None:
         """Handle a failed login attempt."""
         new_attempts = user_auth.failed_login_attempts + 1
         
@@ -422,8 +424,8 @@ class AuthService:
             (datetime.now().isoformat(), user_id)
         )
     
-    def _record_login_attempt(self, email: str, ip_address: str, user_agent: str, 
-                            success: bool, failure_reason: str = None) -> None:
+    def _record_login_attempt(self, email: str, ip_address: str = None, user_agent: str = None, 
+                            success: bool = False, failure_reason: str = None) -> None:
         """Record a login attempt."""
         query = """
             INSERT INTO login_attempts (email, ip_address, user_agent, success, attempted_at, failure_reason)
