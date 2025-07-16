@@ -78,14 +78,15 @@ def render_login_page():
         </div>
         <div style="text-align: center; margin-top: 1rem;">
             <span style="color: #cccccc; font-size: 0.9rem;">Don't have an account? </span>
-            <a href="#" style="color: #0066cc; text-decoration: none; font-size: 0.9rem;">Sign up</a>
         </div>
         """, unsafe_allow_html=True)
         
-        # Registration link using primary style
-        if st.button("Create New Account", key="register_link", type="primary"):
-            st.session_state.navigate_to = 'register'
-            st.rerun()
+        # Sign up link as a small button
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            if st.button("Sign up", key="signup_link", type="secondary"):
+                st.session_state.navigate_to = 'register'
+                st.rerun()
 
 
 if __name__ == "__main__":
