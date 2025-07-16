@@ -8,6 +8,7 @@ import os
 import base64
 from controller.app_controller import AppController
 from model.data_models import RawDataStructures
+from view.styles import get_app_theme_css
 
 
 def render_welcome_page():
@@ -20,25 +21,11 @@ def render_welcome_page():
     # Page configuration is handled in main app.py
     
     # Custom CSS for enhanced design
-    st.markdown("""
+    st.markdown(f"""
     <style>
-    .stApp {
-        background-color: #2d2d2d !important;
-        background-image: 
-            radial-gradient(circle at 25% 25%, rgba(0, 102, 204, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, rgba(0, 102, 204, 0.03) 0%, transparent 50%),
-            linear-gradient(45deg, rgba(0, 102, 204, 0.02) 25%, transparent 25%, transparent 75%, rgba(0, 102, 204, 0.02) 75%),
-            linear-gradient(45deg, rgba(0, 102, 204, 0.02) 25%, transparent 25%, transparent 75%, rgba(0, 102, 204, 0.02) 75%);
-        background-size: 200px 200px, 200px 200px, 100px 100px, 100px 100px;
-        background-position: 0 0, 100px 100px, 0 0, 50px 50px;
-    }
-    .main .block-container {
-        background-color: transparent !important;
-        padding: 0 2rem !important;
-        margin: 0 !important;
-        max-width: none !important;
-    }
-    .logo-container {
+    {get_app_theme_css()}
+    
+    .logo-container {{
         text-align: center;
         padding: 8vh 0 2vh 0;
         position: relative;
@@ -47,12 +34,12 @@ def render_welcome_page():
         display: flex;
         justify-content: center;
         align-items: center;
-    }
-    .logo-image {
+    }}
+    .logo-image {{
         display: block;
         margin: 0 auto;
-    }
-    .app-title {
+    }}
+    .app-title {{
         font-size: 8rem;
         font-weight: 900;
         color: #0066cc;
@@ -64,8 +51,8 @@ def render_welcome_page():
         letter-spacing: 0.1em;
         position: relative;
         z-index: 10;
-    }
-    .tagline {
+    }}
+    .tagline {{
         text-align: center;
         color: #ffffff;
         font-size: 1.5rem;
@@ -73,49 +60,49 @@ def render_welcome_page():
         margin: 0 0 3rem 0;
         opacity: 0.9;
         font-style: italic;
-    }
-    .content-section {
+    }}
+    .content-section {{
         background-color: rgba(0, 0, 0, 0.3);
         border-radius: 15px;
         padding: 2rem;
         margin: 2rem 0;
         border-left: 4px solid #0066cc;
         backdrop-filter: blur(10px);
-    }
-    .feature-grid {
+    }}
+    .feature-grid {{
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 1.5rem;
         margin: 2rem 0;
-    }
-    .feature-card {
+    }}
+    .feature-card {{
         background-color: rgba(0, 102, 204, 0.1);
         border-radius: 10px;
         padding: 1.5rem;
         border: 1px solid rgba(0, 102, 204, 0.3);
         transition: all 0.3s ease;
-    }
-    .feature-card:hover {
+    }}
+    .feature-card:hover {{
         transform: translateY(-5px);
         box-shadow: 0 10px 25px rgba(0, 102, 204, 0.2);
-    }
-    .feature-icon {
+    }}
+    .feature-icon {{
         font-size: 2.5rem;
         margin-bottom: 1rem;
         color: #0066cc;
-    }
-    .feature-title {
+    }}
+    .feature-title {{
         color: #ffffff;
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
-    }
-    .feature-description {
+    }}
+    .feature-description {{
         color: #cccccc;
         font-size: 0.95rem;
         line-height: 1.5;
-    }
-    .cta-button {
+    }}
+    .cta-button {{
         background: linear-gradient(135deg, #ff6600, #ff8533);
         color: white;
         padding: 1rem 2rem;
@@ -128,27 +115,27 @@ def render_welcome_page():
         cursor: pointer;
         margin: 2rem auto;
         text-align: center;
-    }
-    .cta-button:hover {
+    }}
+    .cta-button:hover {{
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
-    }
-    .button-container {
+    }}
+    .button-container {{
         text-align: center;
         margin: 2rem 0;
-    }
-    .stMarkdown {
+    }}
+    .stMarkdown {{
         background-color: transparent !important;
-    }
-    .auth-buttons {
+    }}
+    .auth-buttons {{
         position: fixed !important;
         top: 4rem !important;
         right: 2rem !important;
         z-index: 1000 !important;
         display: flex !important;
         gap: 1rem !important;
-    }
-    .auth-button {
+    }}
+    .auth-button {{
         background: linear-gradient(135deg, #0066cc, #0052a3) !important;
         color: white !important;
         border: none !important;
@@ -158,30 +145,30 @@ def render_welcome_page():
         transition: all 0.3s ease !important;
         box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3) !important;
         cursor: pointer !important;
-    }
-    .auth-button:hover {
+    }}
+    .auth-button:hover {{
         transform: translateY(-2px) !important;
         box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4) !important;
         background: linear-gradient(135deg, #0052a3, #003d7a) !important;
-    }
-    .register-button {
+    }}
+    .register-button {{
         background: linear-gradient(135deg, #28a745, #20c997) !important;
-    }
-    .register-button:hover {
+    }}
+    .register-button:hover {{
         background: linear-gradient(135deg, #218838, #1ea085) !important;
-    }
+    }}
 
     </style>
     """, unsafe_allow_html=True)
     
-    # Authentication buttons in top right corner
+    # Authentication buttons in top right corner using secondary style
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Login", key="login_nav_button"):
+        if st.button("Login", key="login_nav_button", type="secondary"):
             st.session_state.navigate_to = 'login'
             st.rerun()
     with col2:
-        if st.button("Register", key="register_nav_button"):
+        if st.button("Register", key="register_nav_button", type="secondary"):
             st.session_state.navigate_to = 'register'
             st.rerun()
     
@@ -276,13 +263,6 @@ def render_welcome_page():
                 <div class="feature-title">High Performance</div>
                 <div class="feature-description">
                     Handle large datasets efficiently with Pandas and PySpark support for scalable processing.
-                </div>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔐</div>
-                <div class="feature-title">Secure Authentication</div>
-                <div class="feature-description">
-                    Robust user authentication and authorization system with role-based access control.
                 </div>
             </div>
         </div>

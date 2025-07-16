@@ -23,7 +23,8 @@ def get_button_css(button_types: List[str] = None) -> str:
     
     if "primary" in button_types:
         css_parts.append("""
-        [data-testid="stButton"] button[kind="primary"] {
+        [data-testid="stButton"] button[kind="primary"],
+        [data-testid="stFormSubmitButton"] button {
             background: linear-gradient(135deg, #ff6600, #ff8533) !important;
             color: white !important;
             border: none !important;
@@ -31,7 +32,8 @@ def get_button_css(button_types: List[str] = None) -> str:
             font-weight: 600 !important;
             transition: all 0.3s ease !important;
         }
-        [data-testid="stButton"] button[kind="primary"]:hover {
+        [data-testid="stButton"] button[kind="primary"]:hover,
+        [data-testid="stFormSubmitButton"] button:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4) !important;
         }

@@ -9,7 +9,7 @@ from pathlib import Path
 from controller.app_controller import AppController
 from view.pages.welcome import render_welcome_page
 from view.pages.login import render_login_page
-from view.pages.register import render_register_page
+from view.pages.register import show_register_page
 from model.data_models import User, UserRole, UserStatus
 
 # Add the project root to Python path to ensure imports work correctly
@@ -177,7 +177,7 @@ def main():
         if st.session_state.current_page == 'login':
             render_login_page()
         elif st.session_state.current_page == 'register':
-            render_register_page()
+            show_register_page()
         else:
             render_welcome_page()
     else:
