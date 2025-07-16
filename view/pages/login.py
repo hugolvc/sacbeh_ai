@@ -65,6 +65,8 @@ def render_login_page():
                             st.session_state.session_token = session_token
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
+                        # Redirect to home page
+                        st.session_state.navigate_to = 'home'
                         st.rerun()
                     else:
                         st.error(f"Login failed: {message}")

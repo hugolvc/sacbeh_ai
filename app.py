@@ -10,6 +10,7 @@ from controller.app_controller import AppController
 from view.pages.welcome import render_welcome_page
 from view.pages.login import render_login_page
 from view.pages.register import show_register_page
+from view.pages.home import render_home_page
 from model.data_models import User, UserRole, UserStatus
 
 # Add the project root to Python path to ensure imports work correctly
@@ -170,14 +171,21 @@ def main():
                         st.session_state.session_token = None
                         st.session_state.logged_in = False
                         st.session_state.user_email = None
-                        st.session_state.current_page = 'welcome'
+                        st.session_state.navigate_to = 'welcome'
                         st.rerun()
+        
+        # Auto-redirect authenticated users to home page
+        if st.session_state.logged_in and st.session_state.current_page == 'welcome':
+            st.session_state.navigate_to = 'home'
+            st.rerun()
         
         # Render the appropriate page
         if st.session_state.current_page == 'login':
             render_login_page()
         elif st.session_state.current_page == 'register':
             show_register_page()
+        elif st.session_state.current_page == 'home':
+            render_home_page()
         else:
             render_welcome_page()
     else:

@@ -49,12 +49,15 @@ class AuthService:
             Tuple of (success, message)
         """
         try:
+            # Normalize email (lowercase and trim whitespace)
+            email = email.lower().strip()
+            
             # Validate password strength
             is_strong, issues = AuthUtils.is_password_strong(password)
             if not is_strong:
                 return False, f"Password is not strong enough: {', '.join(issues)}"
             
-            # Check if user already exists
+            # Check if user already exists (case-insensitive)
             existing_user = self.get_user_auth_by_email(email)
             if existing_user:
                 return False, "User with this email already exists"
@@ -101,6 +104,9 @@ class AuthService:
             Tuple of (success, message, session)
         """
         try:
+            # Normalize email for case-insensitive lookup
+            email = email.lower().strip()
+            
             # Get user auth record
             user_auth = self.get_user_auth_by_email(email)
             if not user_auth:
@@ -239,10 +245,12 @@ class AuthService:
             return False
     
     def get_user_auth_by_email(self, email: str) -> Optional[UserAuth]:
-        """Get user authentication record by email."""
+        """Get user authentication record by email (case-insensitive)."""
         try:
+            # Normalize email for case-insensitive lookup
+            email = email.lower().strip()
             results = self.connector.execute_query(
-                "SELECT * FROM user_auth WHERE email = ?", (email,)
+                "SELECT * FROM user_auth WHERE LOWER(email) = ?", (email,)
             )
             if results:
                 return self._row_to_user_auth(results[0])
@@ -427,6 +435,8 @@ class AuthService:
     def _record_login_attempt(self, email: str, ip_address: str = None, user_agent: str = None, 
                             success: bool = False, failure_reason: str = None) -> None:
         """Record a login attempt."""
+        # Normalize email for consistent storage
+        email = email.lower().strip()
         query = """
             INSERT INTO login_attempts (email, ip_address, user_agent, success, attempted_at, failure_reason)
             VALUES (?, ?, ?, ?, ?, ?)
