@@ -12,12 +12,19 @@ from view.pages.login import render_login_page
 from view.pages.register import show_register_page
 from view.pages.home import render_home_page
 from model.data_models import User, UserRole, UserStatus
+from streamlit_cookies_controller import CookieController
+
+# Initialize cookie controller without caching to avoid issues
+def get_cookie_controller():
+    return CookieController()
 
 # Add the project root to Python path to ensure imports work correctly
 project_root = Path(__file__).parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
+COOKIE_NAME = "sacbeh_session_token"
+COOKIE_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
 
 def initialize_application():
     """
@@ -142,10 +149,29 @@ def main():
     # Initialize the application
     if initialize_application():
         controller = AppController()
+        cookie_controller = get_cookie_controller()
         
-        # Handle page routing
+        # Persistent login: check for session token in cookie
+        if not st.session_state.get('logged_in', False):
+            session_token_cookie = cookie_controller.get(COOKIE_NAME)
+            if session_token_cookie:
+                if controller.verify_session(session_token_cookie):
+                    st.session_state.session_token = session_token_cookie
+                    st.session_state.logged_in = True
+                    current_user = controller.get_current_user()
+                    if current_user:
+                        st.session_state.user_email = current_user.get('email')
+                else:
+                    # Clear invalid session
+                    cookie_controller.remove(COOKIE_NAME)
+        
+        # Handle page routing and auto-redirect for authenticated users
         if 'current_page' not in st.session_state:
             st.session_state.current_page = 'welcome'
+        
+        # Auto-redirect authenticated users to home page BEFORE showing any page
+        if st.session_state.logged_in and st.session_state.current_page == 'welcome':
+            st.session_state.current_page = 'home'
         
         # Check for page navigation
         if 'navigate_to' in st.session_state:
@@ -171,13 +197,9 @@ def main():
                         st.session_state.session_token = None
                         st.session_state.logged_in = False
                         st.session_state.user_email = None
+                        cookie_controller.remove(COOKIE_NAME)
                         st.session_state.navigate_to = 'welcome'
                         st.rerun()
-        
-        # Auto-redirect authenticated users to home page
-        if st.session_state.logged_in and st.session_state.current_page == 'welcome':
-            st.session_state.navigate_to = 'home'
-            st.rerun()
         
         # Render the appropriate page
         if st.session_state.current_page == 'login':

@@ -8,7 +8,14 @@ import os
 import base64
 from controller.app_controller import AppController
 from view.styles import get_button_css, get_form_input_css, get_app_theme_css
+from streamlit_cookies_controller import CookieController
 
+COOKIE_NAME = "sacbeh_session_token"
+COOKIE_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
+
+# Initialize cookie controller without caching to avoid issues
+def get_cookie_controller():
+    return CookieController()
 
 def render_login_page():
     """
@@ -16,6 +23,7 @@ def render_login_page():
     """
     # Get the singleton controller instance
     controller = AppController()
+    cookie_controller = get_cookie_controller()
     
     # Use reusable CSS styling
     st.markdown(f"""
@@ -63,6 +71,9 @@ def render_login_page():
                         session_token = controller.get_session_token()
                         if session_token:
                             st.session_state.session_token = session_token
+                            if remember_me:
+                                # Set persistent cookie
+                                cookie_controller.set(COOKIE_NAME, session_token, max_age=COOKIE_MAX_AGE)
                         st.session_state.logged_in = True
                         st.session_state.user_email = email
                         # Redirect to home page
