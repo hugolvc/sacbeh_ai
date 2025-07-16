@@ -32,8 +32,10 @@ class AuthService:
         self.max_failed_attempts = 5
         self.lockout_duration = timedelta(minutes=30)  # 30 minutes
     
-    def register_user(self, email: str, password: str, name: str, 
-                     role: UserRoleEnum = UserRoleEnum.USER) -> Tuple[bool, str]:
+    def register_user(
+        self, email: str, password: str, name: str, 
+        role: UserRoleEnum = UserRoleEnum.USER
+    ) -> Tuple[bool, str]:
         """
         Register a new user in the system.
         
