@@ -98,7 +98,9 @@ def show_register_page():
                     else:
                         st.error(f"Registration failed: {message}")
         
-        # Login button using secondary style
-        if st.button("Login", key="login_link", type="secondary"):
-            st.session_state.navigate_to = 'login'
-            st.rerun() 
+        # Login button - centered using the same strategy as login page
+        button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
+        with button_cols[3]:
+            if st.button("Login", key="login_link", type="secondary", use_container_width=True):
+                st.session_state.navigate_to = 'login'
+                st.rerun() 

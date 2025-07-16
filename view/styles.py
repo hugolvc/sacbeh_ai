@@ -1,6 +1,31 @@
 """
 Reusable CSS styles for the Sacbeh application.
 Returns CSS strings that can be used with st.markdown().
+
+BUTTON CENTERING STRATEGY:
+For centering Streamlit buttons, use the following approach:
+1. Create 7 equal columns: button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
+2. Place button in the middle column: with button_cols[3]:
+3. Use use_container_width=True: st.button(..., use_container_width=True)
+
+IMPORTANT: Streamlit only allows one level of column nesting. If you need to center
+a button that's already inside a column structure, move the button centering
+columns outside of the existing column context.
+
+Example:
+# Wrong (nested columns):
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])  # This won't work!
+
+# Correct (separate column contexts):
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    # Form content here
+# Button centering outside the above columns:
+button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
+with button_cols[3]:
+    st.button(..., use_container_width=True)
 """
 
 from typing import Dict, List

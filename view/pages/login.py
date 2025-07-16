@@ -81,13 +81,14 @@ def render_login_page():
         </div>
         """, unsafe_allow_html=True)
         
-        # Sign up link as a small button
-        col1, col2, col3 = st.columns([1, 1, 1])
-        with col2:
-            if st.button("Sign up", key="signup_link", type="secondary"):
+    # Sign up button - centered using wider center column
+    with col2:
+        button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
+        with button_cols[3]:
+            if st.button("Sign up", key="signup_link", type="secondary", use_container_width=True):
                 st.session_state.navigate_to = 'register'
                 st.rerun()
 
 
 if __name__ == "__main__":
-    render_login_page() 
+    render_login_page()
