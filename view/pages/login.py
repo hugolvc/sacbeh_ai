@@ -35,11 +35,11 @@ def render_login_page():
     st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
     
     # Create columns to center the form
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     
     with col2:
         # Title
-        st.markdown('<h2 style="color: #0066cc; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Sign In</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 style="color: #0066cc; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Login</h2>', unsafe_allow_html=True)
         
         # Login form
         with st.form("login_form"):
@@ -71,23 +71,24 @@ def render_login_page():
                 else:
                     st.error("Please enter both email and password.")
         
-        # Additional options
-        st.markdown("""
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="#" style="color: #0066cc; text-decoration: none; font-size: 0.9rem;">Forgot password?</a>
-        </div>
-        <div style="text-align: center; margin-top: 1rem;">
-            <span style="color: #cccccc; font-size: 0.9rem;">Don't have an account? </span>
-        </div>
-        """, unsafe_allow_html=True)
-        
     # Sign up button - centered using wider center column
-    with col2:
-        button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
-        with button_cols[3]:
-            if st.button("Sign up", key="signup_link", type="secondary", use_container_width=True):
-                st.session_state.navigate_to = 'register'
-                st.rerun()
+    button_cols = st.columns([1, 1, 1, 1, 1, 1, 1, 1, 1])
+    with button_cols[4]:
+        # Additional options
+        st.markdown(
+            """
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="#" style="color: #0066cc; text-decoration: none; font-size: 0.9rem;">Forgot password?</a>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <span style="color: #cccccc; font-size: 0.9rem;">Don't have an account? </span>
+                </div>
+            """,
+            unsafe_allow_html=True
+        )
+        if st.button("Sign up", key="signup_link", type="secondary", use_container_width=True):
+            st.session_state.navigate_to = 'register'
+            st.rerun()
 
 
 if __name__ == "__main__":

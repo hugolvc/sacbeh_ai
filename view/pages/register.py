@@ -48,7 +48,7 @@ def show_register_page():
     st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
     
     # Create columns to center the form
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
     
     with col2:
         # Registration form
@@ -56,7 +56,7 @@ def show_register_page():
             st.markdown("""
             <div style="text-align: center; margin-bottom: 2rem;">
                 <h1 style="color: #ffffff; margin-bottom: 0.5rem;">Create Account</h1>
-                <p style="color: #cccccc; font-size: 1rem;">Join Sacbeh AI today</p>
+                <p style="color: #cccccc; font-size: 1rem;">Join Sacbeh today</p>
             </div>
             """, unsafe_allow_html=True)
             
@@ -98,9 +98,17 @@ def show_register_page():
                     else:
                         st.error(f"Registration failed: {message}")
         
-        # Login button - centered using the same strategy as login page
-        button_cols = st.columns([1, 1, 1, 1, 1, 1, 1])
-        with button_cols[3]:
-            if st.button("Login", key="login_link", type="secondary", use_container_width=True):
-                st.session_state.navigate_to = 'login'
-                st.rerun() 
+    # Login button - centered using the same strategy as login page
+    button_cols = st.columns([1, 1, 1, 1, 1, 1, 1, 1, 1])
+    with button_cols[4]:
+        st.markdown(
+            """
+                <div style="text-align: center; margin-top: 1rem;">
+                    <span style="color: #cccccc; font-size: 0.9rem;">Already have an account? </span>
+                </div>
+            """,
+            unsafe_allow_html=True
+        )
+        if st.button("Login", key="login_link", type="secondary", use_container_width=True):
+            st.session_state.navigate_to = 'login'
+            st.rerun() 
