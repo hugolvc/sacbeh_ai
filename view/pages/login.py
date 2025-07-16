@@ -115,13 +115,20 @@ def render_login_page():
             
             if submit_button:
                 if email and password:
-                    # Here you would typically validate credentials
-                    # For now, we'll just show a success message
-                    st.success("Login successful! Redirecting...")
-                    # In a real app, you would set session state and redirect
-                    st.session_state.logged_in = True
-                    st.session_state.user_email = email
-                    st.rerun()
+                    # Use the authorization controller for authentication
+                    success, message = controller.login_user(email, password)
+                    
+                    if success:
+                        st.success("Login successful! Redirecting...")
+                        # Store session token in session state
+                        session_token = controller.get_session_token()
+                        if session_token:
+                            st.session_state.session_token = session_token
+                        st.session_state.logged_in = True
+                        st.session_state.user_email = email
+                        st.rerun()
+                    else:
+                        st.error(f"Login failed: {message}")
                 else:
                     st.error("Please enter both email and password.")
         
@@ -135,6 +142,11 @@ def render_login_page():
             <a href="#" style="color: #0066cc; text-decoration: none; font-size: 0.9rem;">Sign up</a>
         </div>
         """, unsafe_allow_html=True)
+        
+        # Registration link
+        if st.button("Create New Account", key="register_link"):
+            st.session_state.navigate_to = 'register'
+            st.rerun()
 
 
 if __name__ == "__main__":

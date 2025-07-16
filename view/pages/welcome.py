@@ -140,16 +140,52 @@ def render_welcome_page():
     .stMarkdown {
         background-color: transparent !important;
     }
+    .auth-buttons {
+        position: fixed !important;
+        top: 4rem !important;
+        right: 2rem !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        gap: 1rem !important;
+    }
+    .auth-button {
+        background: linear-gradient(135deg, #0066cc, #0052a3) !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.75rem 1.5rem !important;
+        border-radius: 20px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3) !important;
+        cursor: pointer !important;
+    }
+    .auth-button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4) !important;
+        background: linear-gradient(135deg, #0052a3, #003d7a) !important;
+    }
+    .register-button {
+        background: linear-gradient(135deg, #28a745, #20c997) !important;
+    }
+    .register-button:hover {
+        background: linear-gradient(135deg, #218838, #1ea085) !important;
+    }
 
     </style>
     """, unsafe_allow_html=True)
     
-    # Login button in top right corner
-    if st.button("Login", key="login_nav_button"):
-        st.session_state.navigate_to = 'login'
-        st.rerun()
+    # Authentication buttons in top right corner
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Login", key="login_nav_button"):
+            st.session_state.navigate_to = 'login'
+            st.rerun()
+    with col2:
+        if st.button("Register", key="register_nav_button"):
+            st.session_state.navigate_to = 'register'
+            st.rerun()
     
-    # Position the button with CSS
+    # Position the buttons with CSS
     st.markdown("""
     <style>
     [data-testid="stButton"] button[kind="secondary"] {
@@ -240,6 +276,13 @@ def render_welcome_page():
                 <div class="feature-title">High Performance</div>
                 <div class="feature-description">
                     Handle large datasets efficiently with Pandas and PySpark support for scalable processing.
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <div class="feature-title">Secure Authentication</div>
+                <div class="feature-description">
+                    Robust user authentication and authorization system with role-based access control.
                 </div>
             </div>
         </div>
