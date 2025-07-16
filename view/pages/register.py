@@ -44,11 +44,6 @@ def show_register_page():
     </style>
     """, unsafe_allow_html=True)
     
-    # Back button using secondary style
-    if st.button("← Back", key="back_button", type="secondary"):
-        st.session_state.navigate_to = 'login'
-        st.rerun()
-    
     # Add top padding to avoid development bar
     st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
     
@@ -103,7 +98,7 @@ def show_register_page():
                     else:
                         st.error(f"Registration failed: {message}")
         
-        # Back to Login button using primary style
-        if st.button("Back to Login", key="login_link", type="primary"):
+        # Login button using primary style
+        if st.button("Login", key="login_link", type="primary"):
             st.session_state.navigate_to = 'login'
             st.rerun() 

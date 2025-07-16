@@ -168,8 +168,8 @@ def render_welcome_page():
             st.session_state.navigate_to = 'login'
             st.rerun()
     with col2:
-        if st.button("Register", key="register_nav_button", type="secondary"):
-            st.session_state.navigate_to = 'register'
+        if st.button("Login", key="register_nav_button", type="secondary"):
+            st.session_state.navigate_to = 'login'
             st.rerun()
     
     # Position the buttons with CSS
