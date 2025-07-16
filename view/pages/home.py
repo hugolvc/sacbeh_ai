@@ -23,39 +23,13 @@ def render_home_page():
     </style>
     """, unsafe_allow_html=True)
     
-    # Back button using secondary style
-    if st.button("← Back to Welcome", key="back_button", type="secondary"):
-        st.session_state.navigate_to = 'welcome'
-        st.rerun()
-    
     # Add top padding to avoid development bar
     st.markdown("<div style='height: 2rem;'></div>", unsafe_allow_html=True)
     
     # Welcome header
     st.markdown('<h1 style="color: #0066cc; text-align: center; margin-bottom: 2rem;">🏛️ Welcome to Sacbeh</h1>', unsafe_allow_html=True)
     
-    # Get current user information
-    current_user = controller.get_current_user()
-    if current_user:
-        user_email = current_user.get('email', 'User')
-        user_roles = current_user.get('roles', [])
-        
-        # Welcome message
-        st.markdown(f"""
-        <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); 
-                    padding: 2rem; 
-                    border-radius: 15px; 
-                    border-left: 5px solid #0066cc; 
-                    margin-bottom: 2rem;">
-            <h2 style="color: #333; margin-bottom: 1rem;">Welcome back, {user_email}!</h2>
-            <p style="color: #666; font-size: 1.1rem; margin-bottom: 0.5rem;">
-                You're logged in with the following roles: <strong>{', '.join(user_roles) if user_roles else 'Standard User'}</strong>
-            </p>
-            <p style="color: #666; font-size: 1rem; margin-bottom: 0;">
-                Ready to explore the ancient pathways of knowledge with AI-powered analysis.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+
     
     # Dashboard content
     col1, col2 = st.columns(2)

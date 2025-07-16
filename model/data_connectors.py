@@ -226,6 +226,7 @@ class SQLiteConnector(DatabaseConnector):
         cursor = self.connection.cursor()
         cursor.execute(query, params)
         affected_rows = cursor.rowcount
+        self.connection.commit()  # Commit the transaction
         cursor.close()
         return affected_rows
     
